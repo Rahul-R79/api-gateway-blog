@@ -9,9 +9,9 @@ const router = express.Router();
 // Sign Up
 router.post("/signup", async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { displayName, email, password } = req.body;
         const response = await authClient.signUp({
-            displayName: name,
+            displayName,
             email,
             password,
         });
@@ -33,14 +33,29 @@ router.post("/signup", async (req, res) => {
         res.status(201).json({
             user: {
                 id: response.user?.id,
-                name: response.user?.displayName,
+                displayName: response.user?.displayName,
                 email: response.user?.email,
             },
             accessToken: response.accessToken,
             refreshToken: response.refreshToken,
         });
     } catch (error: any) {
-        res.status(400).json({ error: error.message || "Registration failed" });
+        let validationErrors: Record<string, string> = {};
+
+        if (error.metadata) {
+            const fieldsMetadata = error.metadata.get("fields");
+            if (fieldsMetadata) {
+                validationErrors = JSON.parse(fieldsMetadata);
+            }
+        }
+
+        res.status(400).json({
+            error: error.message,
+            fields:
+                Object.keys(validationErrors).length > 0
+                    ? validationErrors
+                    : undefined,
+        });
     }
 });
 
@@ -67,15 +82,28 @@ router.post("/signin", async (req, res) => {
         res.json({
             user: {
                 id: response.user?.id,
-                name: response.user?.displayName,
+                displayName: response.user?.displayName,
                 email: response.user?.email,
             },
             accessToken: response.accessToken,
             refreshToken: response.refreshToken,
         });
     } catch (error: any) {
-        res.status(401).json({
-            error: error.message || "Authentication failed",
+        let validationErrors: Record<string, string> = {};
+
+        if (error.metadata) {
+            const fieldsMetadata = error.metadata.get("fields");
+            if (fieldsMetadata) {
+                validationErrors = JSON.parse(fieldsMetadata);
+            }
+        }
+
+        res.status(400).json({
+            error: error.message,
+            fields:
+                Object.keys(validationErrors).length > 0
+                    ? validationErrors
+                    : undefined,
         });
     }
 });
@@ -84,11 +112,11 @@ router.post("/signin", async (req, res) => {
 router.post("/refresh", async (req, res) => {
     try {
         const refreshToken = req.cookies.refreshToken;
-        
+
         if (!refreshToken) {
             return res.status(401).json({ error: "No refresh token provided" });
         }
-        
+
         const response = await authClient.refreshToken({ refreshToken });
 
         res.cookie("accessToken", response.accessToken, {
@@ -139,6 +167,31 @@ router.get("/me", async (req, res) => {
         res.status(401).json({
             error: error.message || "Token validation failed",
         });
+    }
+});
+
+router.post("/logout", async (req, res) => {
+    try {
+        const refreshToken = req.cookies.refreshToken;
+
+        await authClient.logout({ refreshToken });
+
+        res.clearCookie("accessToken", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+        });
+
+        res.clearCookie("refreshToken", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+        });
+
+        res.status(200).json({ message: "Logged out successfully" });
+
+    } catch (error: any) {
+        res.status(500).json({ error: "Logout failed" });
     }
 });
 

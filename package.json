@@ -7,7 +7,7 @@
     "dev": "nodemon --exec tsx src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "generate": "buf generate buf.build/Rahul-R79/blog-proto",
+    "generate": "buf generate buf.build/rahul-dev01/blog-proto",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
