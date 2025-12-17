@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from 'cors';
 import authRoutes from "./routes/authRoutes";
+import blogRoutes from "./routes/blogRoutes";
+import { errorHandler } from "./middlewares/errorHandlingMiddleware";
 
 dotenv.config();
 
@@ -22,6 +24,9 @@ app.get("/health", (req, res) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/posts", blogRoutes);
+
+app.use(errorHandler);
 
 app.listen(Number(port), () => {
     console.log(`API Gateway running on port ${port}`);
