@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "nodemon --exec tsx src/index.ts",
         "build": "tsc",
-        "start": "node dist/index.js",
+        "start": "node dist/src/index.js",
         "generate": "buf generate buf.build/rahul-dev01/blog-proto",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -20,19 +20,19 @@
         "cookie-parser": "^1.4.7",
         "cors": "^2.8.5",
         "dotenv": "^17.2.3",
-        "express": "^5.2.1",
-        "@types/cookie-parser": "^1.4.10",
-        "@types/cors": "^2.8.19",
-        "@types/express": "^5.0.6",
-        "@types/node": "^24.10.2",
-        "typescript": "^5.9.3",
-        "ts-node": "^10.9.2"
+        "express": "^5.2.1"
     },
     "devDependencies": {
         "@bufbuild/buf": "^1.61.0",
         "@bufbuild/protoc-gen-es": "^1.10.1",
         "@connectrpc/protoc-gen-connect-es": "^1.7.0",
+        "@types/cookie-parser": "^1.4.10",
+        "@types/cors": "^2.8.19",
+        "@types/express": "^5.0.6",
+        "@types/node": "^24.10.2",
         "nodemon": "^3.1.11",
-        "tsx": "^4.21.0"
+        "ts-node": "^10.9.2",
+        "tsx": "^4.21.0",
+        "typescript": "^5.9.3"
     }
 }
