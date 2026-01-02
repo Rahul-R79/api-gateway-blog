@@ -6,8 +6,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const transport = createConnectTransport({
-    httpVersion: "1.1",
-    baseUrl: process.env.AUTH_SERVICE_URL!
+    httpVersion: "2",
+    baseUrl: process.env.AUTH_SERVICE_URL || "http://localhost:5001"
 });
 
 export const authClient = createClient(AuthService, transport);
