@@ -18,15 +18,15 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
 
         res.cookie("accessToken", response.accessToken, {
             httpOnly: true,
-            secure: true, // Always true for cross-site (Render -> Vercel)
-            sameSite: "none", // Required for cross-site
+            secure: true,
+            sameSite: "none",
             maxAge: 15 * 60 * 1000,
         });
 
         res.cookie("refreshToken", response.refreshToken, {
             httpOnly: true,
-            secure: true, // Always true for cross-site
-            sameSite: "none", // Required for cross-site
+            secure: true,
+            sameSite: "none",
             maxAge: 30 * 24 * 60 * 60 * 1000,
         });
 
@@ -46,22 +46,19 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
 router.post("/signin", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body;
-        console.log(`[DEBUG] Gateway Sign-In Request for: ${email}`);
-
         const response = await authClient.signIn({ email, password });
-        console.log(`[DEBUG] Auth service response received successfully`);
 
         res.cookie("accessToken", response.accessToken, {
             httpOnly: true,
-            secure: true, // Always true for cross-site (Render -> Vercel)
-            sameSite: "none", // Required for cross-site
+            secure: true,
+            sameSite: "none",
             maxAge: 15 * 60 * 1000,
         });
 
         res.cookie("refreshToken", response.refreshToken, {
             httpOnly: true,
-            secure: true, // Always true for cross-site
-            sameSite: "none", // Required for cross-site
+            secure: true,
+            sameSite: "none",
             maxAge: 30 * 24 * 60 * 60 * 1000,
         });
 
@@ -72,13 +69,7 @@ router.post("/signin", async (req: Request, res: Response, next: NextFunction) =
                 email: response.user?.email,
             },
         });
-    } catch (error: any) {
-        console.error(`[DEBUG] Sign-In Error:`, {
-            message: error.message,
-            code: error.code,
-            metadata: error.metadata,
-            stack: error.stack
-        });
+    } catch (error) {
         next(error);
     }
 });
@@ -96,15 +87,15 @@ router.post("/refresh", async (req: Request, res: Response, next: NextFunction) 
 
         res.cookie("accessToken", response.accessToken, {
             httpOnly: true,
-            secure: true, // Always true for cross-site (Render -> Vercel)
-            sameSite: "none", // Required for cross-site
+            secure: true,
+            sameSite: "none",
             maxAge: 15 * 60 * 1000,
         });
 
         res.cookie("refreshToken", response.refreshToken, {
             httpOnly: true,
-            secure: true, // Always true for cross-site
-            sameSite: "none", // Required for cross-site
+            secure: true,
+            sameSite: "none",
             maxAge: 30 * 24 * 60 * 60 * 1000,
         });
 
