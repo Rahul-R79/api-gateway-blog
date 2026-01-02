@@ -46,7 +46,10 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
 router.post("/signin", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password } = req.body;
+        console.log(`[DEBUG] Gateway Sign-In Request for: ${email}`);
+
         const response = await authClient.signIn({ email, password });
+        console.log(`[DEBUG] Auth service response received successfully`);
 
         res.cookie("accessToken", response.accessToken, {
             httpOnly: true,
@@ -69,7 +72,13 @@ router.post("/signin", async (req: Request, res: Response, next: NextFunction) =
                 email: response.user?.email,
             },
         });
-    } catch (error) {
+    } catch (error: any) {
+        console.error(`[DEBUG] Sign-In Error:`, {
+            message: error.message,
+            code: error.code,
+            metadata: error.metadata,
+            stack: error.stack
+        });
         next(error);
     }
 });
