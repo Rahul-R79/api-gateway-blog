@@ -18,15 +18,15 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
 
         res.cookie("accessToken", response.accessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            secure: true, // Always true for cross-site (Render -> Vercel)
+            sameSite: "none", // Required for cross-site
             maxAge: 15 * 60 * 1000,
         });
 
         res.cookie("refreshToken", response.refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            secure: true, // Always true for cross-site
+            sameSite: "none", // Required for cross-site
             maxAge: 30 * 24 * 60 * 60 * 1000,
         });
 
@@ -53,15 +53,15 @@ router.post("/signin", async (req: Request, res: Response, next: NextFunction) =
 
         res.cookie("accessToken", response.accessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            secure: true, // Always true for cross-site (Render -> Vercel)
+            sameSite: "none", // Required for cross-site
             maxAge: 15 * 60 * 1000,
         });
 
         res.cookie("refreshToken", response.refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            secure: true, // Always true for cross-site
+            sameSite: "none", // Required for cross-site
             maxAge: 30 * 24 * 60 * 60 * 1000,
         });
 
@@ -96,15 +96,15 @@ router.post("/refresh", async (req: Request, res: Response, next: NextFunction) 
 
         res.cookie("accessToken", response.accessToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            secure: true, // Always true for cross-site (Render -> Vercel)
+            sameSite: "none", // Required for cross-site
             maxAge: 15 * 60 * 1000,
         });
 
         res.cookie("refreshToken", response.refreshToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            secure: true, // Always true for cross-site
+            sameSite: "none", // Required for cross-site
             maxAge: 30 * 24 * 60 * 60 * 1000,
         });
 
