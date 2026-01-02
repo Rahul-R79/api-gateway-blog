@@ -12,8 +12,14 @@ const app = express();
 const port = process.env.PORT;
 
 app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true
+    origin: [
+        process.env.FRONTEND_URL || "http://localhost:5173",
+        "http://localhost:5173",
+        "http://localhost:5174"
+    ],
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"]
 }));
 
 app.use(express.json());
