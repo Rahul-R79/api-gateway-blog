@@ -7,7 +7,7 @@ dotenv.config();
 
 const transport = createConnectTransport({
     httpVersion: "1.1",
-    baseUrl: process.env.BLOG_SERVICE_URL!
+    baseUrl: process.env.BLOG_SERVICE_URL!,
 })
 
 export const blogClient = createClient(PostService, transport);
