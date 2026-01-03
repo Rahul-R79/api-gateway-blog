@@ -21,14 +21,16 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
             secure: true,
             sameSite: "none",
             maxAge: 15 * 60 * 1000,
-        });
+            partitioned: true,
+        } as any);
 
         res.cookie("refreshToken", response.refreshToken, {
             httpOnly: true,
             secure: true,
             sameSite: "none",
             maxAge: 30 * 24 * 60 * 60 * 1000,
-        });
+            partitioned: true,
+        } as any);
 
         res.status(201).json({
             user: {
@@ -53,14 +55,16 @@ router.post("/signin", async (req: Request, res: Response, next: NextFunction) =
             secure: true,
             sameSite: "none",
             maxAge: 15 * 60 * 1000,
-        });
+            partitioned: true,
+        } as any);
 
         res.cookie("refreshToken", response.refreshToken, {
             httpOnly: true,
             secure: true,
             sameSite: "none",
             maxAge: 30 * 24 * 60 * 60 * 1000,
-        });
+            partitioned: true,
+        } as any);
 
         res.json({
             user: {
@@ -90,14 +94,16 @@ router.post("/refresh", async (req: Request, res: Response, next: NextFunction) 
             secure: true,
             sameSite: "none",
             maxAge: 15 * 60 * 1000,
-        });
+            partitioned: true,
+        } as any);
 
         res.cookie("refreshToken", response.refreshToken, {
             httpOnly: true,
             secure: true,
             sameSite: "none",
             maxAge: 30 * 24 * 60 * 60 * 1000,
-        });
+            partitioned: true,
+        } as any);
 
         res.json({
             success: true,
@@ -141,14 +147,16 @@ router.post("/logout", async (req: Request, res: Response, next: NextFunction) =
         res.clearCookie("accessToken", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-        });
+            sameSite: "none",
+            partitioned: true,
+        } as any);
 
         res.clearCookie("refreshToken", {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-        });
+            sameSite: "none",
+            partitioned: true,
+        } as any);
 
         res.status(200).json({ message: "Logged out successfully" });
     } catch (error) {
