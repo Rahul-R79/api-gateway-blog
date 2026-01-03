@@ -38,6 +38,8 @@ router.post("/signup", async (req: Request, res: Response, next: NextFunction) =
                 displayName: response.user?.displayName,
                 email: response.user?.email,
             },
+            accessToken: response.accessToken,
+            refreshToken: response.refreshToken,
         });
     } catch (error) {
         next(error);
@@ -72,6 +74,8 @@ router.post("/signin", async (req: Request, res: Response, next: NextFunction) =
                 displayName: response.user?.displayName,
                 email: response.user?.email,
             },
+            accessToken: response.accessToken,
+            refreshToken: response.refreshToken,
         });
     } catch (error) {
         next(error);
@@ -81,7 +85,7 @@ router.post("/signin", async (req: Request, res: Response, next: NextFunction) =
 // Refresh Token
 router.post("/refresh", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const refreshToken = req.cookies.refreshToken;
+        const refreshToken = req.cookies.refreshToken || req.body.refreshToken;
 
         if (!refreshToken) {
             return res.status(401).json({ error: "No refresh token provided" });
@@ -107,7 +111,9 @@ router.post("/refresh", async (req: Request, res: Response, next: NextFunction) 
 
         res.json({
             success: true,
-            message: "Token refreshed successfully"
+            message: "Token refreshed successfully",
+            accessToken: response.accessToken,
+            refreshToken: response.refreshToken,
         });
     } catch (error) {
         next(error);
@@ -117,10 +123,10 @@ router.post("/refresh", async (req: Request, res: Response, next: NextFunction) 
 // Get Current User
 router.get("/me", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const token = req.cookies.accessToken;
+        const token = req.cookies.accessToken || req.headers.authorization?.split(" ")[1];
 
         if (!token) {
-            return res.status(401).json({ error: "No access token provided" });
+            return res.status(401).json({ error: "No access token provided" }); // Removed return type mismatch
         }
 
         const response = await authClient.validateToken({ token });
