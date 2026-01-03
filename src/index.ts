@@ -30,11 +30,9 @@ app.use("/posts", blogRoutes);
 
 app.use(errorHandler);
 
-import { startServer } from "./server";
-
-app.use(errorHandler);
-
-startServer(app, Number(port), "API Gateway");
+const server = app.listen(Number(port), "0.0.0.0", () => {
+    console.log(`API Gateway running on port ${port}`);
+});
 
 process.on("unhandledRejection", (err) => {
     console.error("Unhandled Rejection:", err);
