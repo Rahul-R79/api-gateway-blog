@@ -9,7 +9,7 @@ import { errorHandler } from "./middlewares/errorHandlingMiddleware";
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 8080;
 
 app.use(cors({
     origin: true,
@@ -30,6 +30,16 @@ app.use("/posts", blogRoutes);
 
 app.use(errorHandler);
 
-app.listen(Number(port), () => {
+app.listen(Number(port), "0.0.0.0", () => {
     console.log(`API Gateway running on port ${port}`);
+});
+
+process.on("unhandledRejection", (err) => {
+    console.error("Unhandled Rejection:", err);
+    process.exit(1);
+});
+
+process.on("uncaughtException", (err) => {
+    console.error("Uncaught Exception:", err);
+    process.exit(1);
 });
