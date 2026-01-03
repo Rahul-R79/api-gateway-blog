@@ -24,6 +24,8 @@ WORKDIR /app
 
 # Set NODE_ENV to production
 ENV NODE_ENV=production
+# Optimize Node.js for memory constrained environments
+ENV NODE_OPTIONS="--max-old-space-size=460"
 
 # Copy package files
 COPY package*.json ./
